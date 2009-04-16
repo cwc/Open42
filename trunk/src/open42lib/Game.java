@@ -5,8 +5,6 @@ package open42lib;
 
 import java.util.ArrayList;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
-
 /**
  * @author cwc
  *
@@ -16,6 +14,16 @@ public class Game {
 	 * The number of dominos in a set
 	 */
 	public static final int DOMINO_COUNT = 28;
+	
+	/**
+	 * The minimum bid
+	 */
+	public static final int MIN_BID = 30;
+	
+	/**
+	 * The maximum bid (higher bids must be a multiple of this i.e. 84, 168, etc.)
+	 */
+	public static final int MAX_BID = 42;
 
 	/**
 	 * A set of unique <code>Domino</code> objects representing every domino in the game
@@ -41,6 +49,11 @@ public class Game {
 	 * Stores the trump suit for the current hand
 	 */
 	private int trump = -1;
+	
+	/**
+	 * Stores the bid for the current hand
+	 */
+	private int bid = -1;
 	
 	public Game() {
 		// Populate the set of dominos
@@ -94,8 +107,7 @@ public class Game {
 			resetDominos();
 		}
 		
-		ArrayList<Domino> shuffledSet = dominoSet;	// Note that we are not returning a unique set of Domino objects,
-													// but merely shuffling the reference domino set
+		ArrayList<Domino> shuffledSet = dominoSet;
 
 		int[] order = new int[shuffledSet.size()];
 		
@@ -120,5 +132,33 @@ public class Game {
 		}
 		
 		return shuffledSet;
+	}
+
+	public int getTrump() {
+		return trump;
+	}
+
+	public void setTrump(int trump) {
+		if (trump < Domino.MIN_PIPS) {
+			this.trump = Domino.MIN_PIPS;
+		} else if (trump > Domino.MAX_PIPS) {
+			this.trump = Domino.MAX_PIPS;
+		} else {
+			this.trump = trump;
+		}
+	}
+
+	public int getBid() {
+		return bid;
+	}
+
+	public void setBid(int bid) {
+		if (bid < MIN_BID) {
+			this.bid = MIN_BID;
+		} else if (bid > MAX_BID) {
+			this.bid = (bid / MAX_BID) * MAX_BID;
+		} else {
+			this.bid = bid;
+		}
 	}
 }
