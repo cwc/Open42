@@ -65,6 +65,63 @@ public class Game {
 	}
 	
 	/**
+	 * TODO: Describe this method.
+	 * 
+	 * @param hand
+	 * @return
+	 */
+	public int makeBid(Domino[] hand) {
+		int bid = -1;
+		
+		ArrayList<Domino> doubles = new ArrayList<Domino>();	// The doubles in this hand	
+		int[] suits = new int[Domino.MAX_PIPS + 1];			// The number of dominos we have of each suit
+		
+		for (int i = 0; i < suits.length; i++) {	// Initialize the array of suit counts
+			suits[i] = 0;
+		}
+		
+		for (int i = 0; i < hand.length; i++) {
+			if (hand[i].isDouble()) {
+				doubles.add(hand[i]);
+				suits[hand[i].bigEnd()]++;
+			} else {
+				suits[hand[i].bigEnd()]++;
+				suits[hand[i].littleEnd()]++;
+			}
+		}
+		
+		// We now know the number of doubles and the number of each suit (i.e. three 4s, two 6s, five blanks)
+		
+		int maxSide = 0;	// Here we find out which suit we have the most of (this will be our most likely trump candidate)
+		for (int i = 0; i < suits.length - 1; i++) {
+			if (suits[i + 1] > suits[maxSide]) {
+				maxSide = i;
+			}
+		}
+		
+		// Now we calculate our maximum bid
+		if (doubles.contains(new Domino(maxSide, maxSide))) { // Do we have the double for our dominant suit?
+			if (doubles.size() >= hand.length - suits[maxSide]) {
+				// 4 doubles and 4 in our suit would be a potential lay down
+				// Worst hand: (1/1, 3/3, 6/6, 4/4, 4/0, 4/2, 4/3)
+				// Best hand: (4/4, 4/6, 4/5, 4/3, 5/5, 3/3, 2/2)
+				// Worst hand could see opponent's 4/6 capping the 5/5... nasty 
+				
+				// 3 doubles and 4 in our suit is even less stellar
+				// Worst hand: (1/1, 0/0, 0/5, 4/4, 4/0, 4/2, 4/3)
+				// Best hand: (4/4, 4/6, 4/5, 4/3, 3/3, 0/0, 6/5)
+				// Worst hand would probably lose at least 16. Getting the tenners would be a must.
+				bid = 32;	
+			} else {	// Default case (no bid)
+			}
+		} else { // We lack the double for the dominant suit
+			
+		}
+		
+		return bid;
+	}
+	
+	/**
 	 * Divides dominos from the main set into everyone's hands
 	 */
 	public void drawHands() {
