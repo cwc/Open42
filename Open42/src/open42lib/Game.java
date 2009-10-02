@@ -41,11 +41,6 @@ public class Game {
 	};
 	
 	/**
-	 * The pile to which dominos are added after each trick
-	 */
-	private ArrayList<Domino> pile = new ArrayList<Domino>();
-	
-	/**
 	 * Stores the trump suit for the current hand
 	 */
 	private int trump = -1;
@@ -53,7 +48,7 @@ public class Game {
 	/**
 	 * Stores the bid for the current hand
 	 */
-	private int bid = -1;
+	private Bid bid = new Bid(-1);
 	
 	public Game() {
 		// Populate the set of dominos
@@ -70,8 +65,9 @@ public class Game {
 	 * @param hand
 	 * @return
 	 */
-	public int makeBid(Domino[] hand) {
+	public Bid makeBid(Domino[] hand) {
 		int bid = -1;
+		BidCondition bidCondition = BidCondition.Straight;
 		
 		ArrayList<Domino> doubles = new ArrayList<Domino>();	// The doubles in this hand	
 		int[] suits = new int[Domino.MAX_PIPS + 1];			// The number of dominos we have of each suit
@@ -81,6 +77,10 @@ public class Game {
 		}
 		
 		for (int i = 0; i < hand.length; i++) {
+			if (hand[i] == null) {
+				break;
+			}
+		
 			if (hand[i].isDouble()) {
 				doubles.add(hand[i]);
 				suits[hand[i].bigEnd()]++;
@@ -95,13 +95,17 @@ public class Game {
 		int maxSide = 0;	// Here we find out which suit we have the most of (this will be our most likely trump candidate)
 		for (int i = 0; i < suits.length - 1; i++) {
 			if (suits[i + 1] > suits[maxSide]) {
-				maxSide = i;
+				maxSide = i + 1;
 			}
 		}
 		
 		// Now we calculate our maximum bid
 		if (doubles.contains(new Domino(maxSide, maxSide))) { // Do we have the double for our dominant suit?
-			if (doubles.size() >= hand.length - suits[maxSide]) {
+			if (suits[maxSide] - doubles.size() == hand.length - 1) {
+				// We have all trumps and doubles (including the trump double). Be aggressive!
+				// One bad case here is (4/4, 4/3, 4/2, 4/1, 4/0, 1/1, 6/6)
+				bid = 84;
+			} else if (doubles.size() >= hand.length - suits[maxSide]) {
 				// 4 doubles and 4 in our suit would be a potential lay down
 				// Worst hand: (1/1, 3/3, 6/6, 4/4, 4/0, 4/2, 4/3)
 				// Best hand: (4/4, 4/6, 4/5, 4/3, 5/5, 3/3, 2/2)
@@ -111,14 +115,14 @@ public class Game {
 				// Worst hand: (1/1, 0/0, 0/5, 4/4, 4/0, 4/2, 4/3)
 				// Best hand: (4/4, 4/6, 4/5, 4/3, 3/3, 0/0, 6/5)
 				// Worst hand would probably lose at least 16. Getting the tenners would be a must.
-				bid = 32;	
+				bid = 32;
 			} else {	// Default case (no bid)
 			}
 		} else { // We lack the double for the dominant suit
 			
 		}
 		
-		return bid;
+		return new Bid(bid, bidCondition);
 	}
 	
 	/**
@@ -145,11 +149,6 @@ public class Game {
 				}
 			}
 		}
-		
-		// Then, collect the dominos from the pile
-		while (pile.size() > 0) {
-			dominoSet.add(pile.remove(0));
-		}
 	}
 	
 	/**
@@ -159,14 +158,12 @@ public class Game {
 	 * 
 	 * @return <code>Game.dominoSet</code>, after being shuffled
 	 */
-	public ArrayList<Domino> shuffle() {
+	public ArrayList<Domino> shuffleDominos() {
 		if (dominoSet.size() < DOMINO_COUNT) {
 			resetDominos();
 		}
-		
-		ArrayList<Domino> shuffledSet = dominoSet;
 
-		int[] order = new int[shuffledSet.size()];
+		int[] order = new int[dominoSet.size()];
 		
 		for (int i = 0; i < order.length; i++) {
 				order[i] = (int)(Math.random() * 2800);
@@ -180,15 +177,15 @@ public class Game {
 				order[i] = order[i + 1];
 				order[i + 1] = temp;
 				
-				tempD = shuffledSet.get(i);
-				shuffledSet.set(i, shuffledSet.get(i + 1)); 
-				shuffledSet.set(i + 1, tempD);
+				tempD = dominoSet.get(i);
+				dominoSet.set(i, dominoSet.get(i + 1)); 
+				dominoSet.set(i + 1, tempD);
 				
 				i = -1;
 			}
 		}
 		
-		return shuffledSet;
+		return dominoSet;
 	}
 
 	public int getTrump() {
@@ -205,17 +202,11 @@ public class Game {
 		}
 	}
 
-	public int getBid() {
+	public Bid getBid() {
 		return bid;
 	}
 
-	public void setBid(int bid) {
-		if (bid < MIN_BID) {
-			this.bid = MIN_BID;
-		} else if (bid > MAX_BID) {
-			this.bid = (bid / MAX_BID) * MAX_BID;
-		} else {
-			this.bid = bid;
-		}
+	public void setBid(Bid bid) {
+		this.bid = bid;
 	}
 }

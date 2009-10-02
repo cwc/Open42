@@ -20,7 +20,7 @@ public class Domino {
 	}
 	
 	public String toString() {
-		return side0 + "/" + side1;
+		return bigEnd() + "/" + littleEnd();
 	}
 	
 	public void setSide0(int value) {
@@ -53,5 +53,18 @@ public class Domino {
 	
 	public boolean isDouble() {
 		return side0 == side1;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof Domino) {
+			Domino otherDomino = (Domino)o;
+			
+			return (this.littleEnd() == otherDomino.littleEnd() && this.bigEnd() == otherDomino.bigEnd());
+		} else if (o instanceof String) {
+			return this.toString().equals(o);
+		} else {
+			return false;
+		}		
 	}
 }
