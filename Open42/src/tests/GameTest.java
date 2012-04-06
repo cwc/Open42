@@ -3,6 +3,7 @@ package tests;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import open42lib.Bid;
 import open42lib.BidCondition;
@@ -37,80 +38,95 @@ public class GameTest {
 	
 	@Test
 	public final void testMakeBid() {
-		assertEquals(-1, testGame.makeBid(testGame.hands[0]).getBidPoints());
+		assertEquals(-1, testGame.makeBid(testGame.hands.get(0)).getBidPoints());
 		
-		testGame.hands[0][0] = new Domino(6, 6);
-		testGame.hands[0][1] = new Domino(6, 5);
-		testGame.hands[0][2] = new Domino(6, 4);
-		testGame.hands[0][3] = new Domino(6, 3);
-		testGame.hands[0][4] = new Domino(6, 2);
-		testGame.hands[0][5] = new Domino(6, 1);
-		testGame.hands[0][6] = new Domino(6, 0);
+		testGame.hands.get(0).add(new Domino(6, 6));
+		testGame.hands.get(0).add(new Domino(6, 5));
+		testGame.hands.get(0).add(new Domino(6, 4));
+		testGame.hands.get(0).add(new Domino(6, 3));
+		testGame.hands.get(0).add(new Domino(6, 2));
+		testGame.hands.get(0).add(new Domino(6, 1));
+		testGame.hands.get(0).add(new Domino(6, 0));
 		
-		assertEquals(84, testGame.makeBid(testGame.hands[0]).getBidPoints());
+		assertEquals(84, testGame.makeBid(testGame.hands.get(0)).getBidPoints());
 		
-		testGame.hands[0][0] = new Domino(4, 4);
-		testGame.hands[0][1] = new Domino(4, 2);
-		testGame.hands[0][2] = new Domino(4, 1);
-		testGame.hands[0][3] = new Domino(4, 0);
-		testGame.hands[0][4] = new Domino(5, 5);
-		testGame.hands[0][5] = new Domino(3, 3);
-		testGame.hands[0][6] = new Domino(2, 2);
+		testGame = new Game();
 		
-		assertEquals(32, testGame.makeBid(testGame.hands[0]).getBidPoints());
+		testGame.hands.get(0).add(new Domino(4, 4));
+		testGame.hands.get(0).add(new Domino(4, 2));
+		testGame.hands.get(0).add(new Domino(4, 1));
+		testGame.hands.get(0).add(new Domino(4, 0));
+		testGame.hands.get(0).add(new Domino(5, 5));
+		testGame.hands.get(0).add(new Domino(3, 3));
+		testGame.hands.get(0).add(new Domino(2, 2));
 		
-		testGame.hands[0][0] = new Domino(4, 4);
-		testGame.hands[0][1] = new Domino(4, 2);
-		testGame.hands[0][2] = new Domino(4, 1);
-		testGame.hands[0][3] = new Domino(4, 0);
-		testGame.hands[0][4] = new Domino(1, 1);
-		testGame.hands[0][5] = new Domino(3, 3);
-		testGame.hands[0][6] = new Domino(2, 2);
+		assertEquals(32, testGame.makeBid(testGame.hands.get(0)).getBidPoints());
 		
-		assertEquals(31, testGame.makeBid(testGame.hands[0]).getBidPoints());
+		testGame = new Game();
 		
-		testGame.hands[0][0] = new Domino(0, 2);
-		testGame.hands[0][1] = new Domino(0, 3);
-		testGame.hands[0][2] = new Domino(0, 5);
-		testGame.hands[0][3] = new Domino(5, 3);
-		testGame.hands[0][4] = new Domino(3, 2);
-		testGame.hands[0][5] = new Domino(3, 6);
-		testGame.hands[0][6] = new Domino(6, 1);
+		testGame.hands.get(0).add(new Domino(4, 4));
+		testGame.hands.get(0).add(new Domino(4, 2));
+		testGame.hands.get(0).add(new Domino(4, 1));
+		testGame.hands.get(0).add(new Domino(4, 0));
+		testGame.hands.get(0).add(new Domino(1, 1));
+		testGame.hands.get(0).add(new Domino(3, 3));
+		testGame.hands.get(0).add(new Domino(2, 2));
 		
-		assertEquals(84, testGame.makeBid(testGame.hands[0]).getBidPoints());
-		assertEquals(BidCondition.LowDoublesHigh, testGame.makeBid(testGame.hands[0]).getBidCondition());
+		assertEquals(31, testGame.makeBid(testGame.hands.get(0)).getBidPoints());
+		
+		// [4/2, 6/2, 3/0, 5/2, 2/2, 2/1, 6/6] - 42
+		
+		testGame = new Game();
+		
+		testGame.hands.get(0).add(new Domino(4, 2));
+		testGame.hands.get(0).add(new Domino(6, 2));
+		testGame.hands.get(0).add(new Domino(3, 0));
+		testGame.hands.get(0).add(new Domino(5, 2));
+		testGame.hands.get(0).add(new Domino(2, 2));
+		testGame.hands.get(0).add(new Domino(2, 1));
+		testGame.hands.get(0).add(new Domino(6, 6));
+		
+		assertEquals(42, testGame.makeBid(testGame.hands.get(0)).getBidPoints());
+		
+		testGame = new Game();
+		
+		testGame.hands.get(0).add(new Domino(0, 2));
+		testGame.hands.get(0).add(new Domino(0, 3));
+		testGame.hands.get(0).add(new Domino(0, 5));
+		testGame.hands.get(0).add(new Domino(5, 3));
+		testGame.hands.get(0).add(new Domino(3, 2));
+		testGame.hands.get(0).add(new Domino(2, 1));
+		testGame.hands.get(0).add(new Domino(6, 1));
+		
+		assertEquals(42, testGame.makeBid(testGame.hands.get(0)).getBidPoints());
+		assertEquals(BidCondition.LowDoublesHigh, testGame.makeBid(testGame.hands.get(0)).getBidCondition());
 	}
 
 	@Test
 	public final void testShuffleDrawAndReset() {
-		assertEquals(testGame.hands.length, 4);
-		assertEquals(testGame.hands[0].length, 7);
+		assertEquals(testGame.hands.size(), 4);
 
 		ArrayList<Domino> dominos = testGame.shuffleDominos();
 		assertEquals(dominos.size(), Game.DOMINO_COUNT);
-		
-		for (int i = 0; i < testGame.hands.length; i++) {
-			for (int j = 0; j < testGame.hands[i].length; j++) {
-				assertEquals(testGame.hands[i][j], null);
-			}
+
+		// Check that hands are empty
+		for (List<Domino> hand : testGame.hands) {
+			assertEquals(0, hand.size());
 		}
 		
 		testGame.drawHands();
 		
-		assertEquals(dominos.size(), 0);
+		assertEquals(0, dominos.size());
 		
-		for (int i = 0; i < testGame.hands.length; i++) {
-			for (int j = 0; j < testGame.hands[i].length; j++) {
-				assertTrue(testGame.hands[i][j] instanceof Domino);
-			}
+		for (List<Domino> hand : testGame.hands) {
+			assertEquals(7, hand.size());
 		}
 		
 		testGame.resetDominos();
 		
-		for (int i = 0; i < testGame.hands.length; i++) {
-			for (int j = 0; j < testGame.hands[i].length; j++) {
-				assertEquals(testGame.hands[i][j], null);
-			}
+		// Check that hands are empty
+		for (List<Domino> hand : testGame.hands) {
+			assertEquals(0, hand.size());
 		}
 	}
 

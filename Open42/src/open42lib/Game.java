@@ -1,55 +1,50 @@
-/**
- * 
- */
 package open42lib;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author cwc
- *
+ * 
  */
 public class Game {
 	/**
 	 * The number of dominos in a set
 	 */
 	public static final int DOMINO_COUNT = 28;
-	
+
 	/**
 	 * The minimum bid
 	 */
 	public static final int MIN_BID = 30;
-	
+
 	/**
-	 * The maximum bid (higher bids must be a multiple of this i.e. 84, 168, etc.)
+	 * The maximum bid (higher bids must be a multiple of this i.e. 84, 168,
+	 * etc.)
 	 */
 	public static final int MAX_BID = 42;
 
 	/**
-	 * A set of unique <code>Domino</code> objects representing every domino in the game
+	 * A set of unique <code>Domino</code> objects representing every domino in
+	 * the game
 	 */
 	private ArrayList<Domino> dominoSet = new ArrayList<Domino>(DOMINO_COUNT);
-	
+
 	/**
-	 * An array of player hands
+	 * A list of player hands
 	 */
-	public Domino[][] hands = new Domino[][] {
-			new Domino[DOMINO_COUNT / 4],
-			new Domino[DOMINO_COUNT / 4],
-			new Domino[DOMINO_COUNT / 4],
-			new Domino[DOMINO_COUNT / 4]
-	};
-	
+	public List<Hand> hands = new ArrayList<Hand>();
+
 	/**
 	 * Stores the trump suit for the current hand
 	 */
 	private int trump = -1;
-	
+
 	/**
 	 * Stores the bid for the current hand
 	 */
 	private Bid bid = new Bid(-1);
-	
+
 	public Game() {
 		// Populate the set of dominos
 		for (int j = Domino.MIN_PIPS; j <= Domino.MAX_PIPS; j++) {
@@ -57,100 +52,124 @@ public class Game {
 				dominoSet.add(new Domino(j, k));
 			}
 		}
+
+		// Create initial hands
+		hands.add(new Hand());
+		hands.add(new Hand());
+		hands.add(new Hand());
+		hands.add(new Hand());
 	}
-	
+
 	/**
 	 * TODO: Describe this method.
 	 * 
 	 * @param hand
-	 * @return
+	 * @return A Bid object describing the optimum bid
 	 */
-	public Bid makeBid(Domino[] hand) {
+	public Bid makeBid(List<Domino> hand) {
 		int bid = -1;
 		BidCondition bidCondition = BidCondition.Straight;
-		
-		ArrayList<Domino> doubles = new ArrayList<Domino>();	// The doubles in this hand	
-		int[] suits = new int[Domino.MAX_PIPS + 1];			// The number of dominos we have of each suit
-		
-		for (int i = 0; i < suits.length; i++) {	// Initialize the array of suit counts
+
+		Hand doubles = new Hand(); // The doubles in this hand
+		int[] suits = new int[Domino.MAX_PIPS + 1]; // The number of dominos we
+													// have of each suit
+
+		for (int i = 0; i < suits.length; i++) { // Initialize the array of suit
+													// counts
 			suits[i] = 0;
 		}
-		
-		for (int i = 0; i < hand.length; i++) {
-			if (hand[i] == null) {
+
+		for (Domino domino : hand) {
+			if (domino == null) {
 				break;
 			}
-		
-			if (hand[i].isDouble()) {
-				doubles.add(hand[i]);
-				suits[hand[i].bigEnd()]++;
+
+			if (domino.isDouble()) {
+				doubles.add(domino);
+				suits[domino.bigEnd()]++;
 			} else {
-				suits[hand[i].bigEnd()]++;
-				suits[hand[i].littleEnd()]++;
+				suits[domino.bigEnd()]++;
+				suits[domino.littleEnd()]++;
 			}
 		}
-		
-		// We now know the number of doubles and the number of each suit (i.e. three 4s, two 6s, five blanks)
-		
-		int maxSide = 0;	// Here we find out which suit we have the most of (this will be our most likely trump candidate)
+
+		// We now know the number of doubles and the number of each suit (i.e.
+		// three 4s, two 6s, five blanks)
+
+		int maxSide = 0; // Here we find out which suit we have the most of
+							// (this will be our most likely trump candidate)
 		for (int i = 0; i < suits.length - 1; i++) {
 			if (suits[i + 1] > suits[maxSide]) {
 				maxSide = i + 1;
 			}
 		}
-		
+
 		// Now we calculate our maximum bid
-		if (doubles.contains(new Domino(maxSide, maxSide))) { // Do we have the double for our dominant suit?
-			if (suits[maxSide] - doubles.size() == hand.length - 1) {
-				// We have all trumps and doubles (including the trump double). Be aggressive!
+		if (doubles.contains(new Domino(maxSide, maxSide))) { // Do we have the
+																// double for
+																// our dominant
+																// suit?
+			if (suits[maxSide] - doubles.size() == hand.size() - 1) {
+				// We have all trumps and doubles (including the trump double).
+				// Be aggressive!
 				// One bad case here is (4/4, 4/3, 4/2, 4/1, 4/0, 1/1, 6/6)
 				bid = 84;
-			} else if (doubles.size() >= hand.length - suits[maxSide]) {
+			} else if (suits[maxSide] > 4) {
+				// We have five or more trumps
+				bid = 42;
+			} else if (doubles.size() >= hand.size() - suits[maxSide]) {
 				// 4 doubles and 4 in our suit would be a potential lay down
 				// Worst hand: (1/1, 3/3, 6/6, 4/4, 4/0, 4/2, 4/3)
 				// Best hand: (4/4, 4/6, 4/5, 4/3, 5/5, 3/3, 2/2)
-				// Worst hand could see opponent's 4/6 capping the 5/5... nasty 
-				
+				// Worst hand could see opponent's 4/6 capping the 5/5... nasty
+
 				// 3 doubles and 4 in our suit is even less stellar
 				// Worst hand: (1/1, 0/0, 0/5, 4/4, 4/0, 4/2, 4/3)
 				// Best hand: (4/4, 4/6, 4/5, 4/3, 3/3, 0/0, 6/5)
-				// Worst hand would probably lose at least 16. Getting the tenners would be a must.
-				bid = 32;
-			} else {	// Default case (no bid)
+				// Worst hand would probably lose at least 16. Getting the
+				// tenners would be a must.
+				if (doubles.contains("5/5")) {
+					bid = 32;
+				} else {
+					bid = 31;
+				}
 			}
 		} else { // We lack the double for the dominant suit
-			
+			if (maxSide == 0 || maxSide == 1) {
+				// Can we go low?
+				if (suits[maxSide] >= 3) {
+					bidCondition = BidCondition.LowDoublesHigh;
+					bid = 42;
+				}
+			}
 		}
-		
+
 		return new Bid(bid, bidCondition);
 	}
-	
+
 	/**
 	 * Divides dominos from the main set into everyone's hands
 	 */
 	public void drawHands() {
-		for (int i = 0; i < hands.length; i++) {
-			for (int j = 0; j < hands[i].length; j++) {
-				hands[i][j] = dominoSet.remove(0);
+		for (List<Domino> hand : hands) {
+			while (hand.size() < 7) {
+				hand.add(dominoSet.remove(0));
 			}
 		}
 	}
-	
+
 	/**
 	 * Puts all dominos back into the main set
 	 */
 	public void resetDominos() {
-		// First, empty everyone's hands
-		for (int i = 0; i < hands.length; i++) {
-			for (int j = 0; j < hands[i].length; j++) {
-				if (hands[i][j] != null) {
-					dominoSet.add(hands[i][j]);
-					hands[i][j] = null;
-				}
+		// Empty everyone's hands
+		for (ArrayList<Domino> hand : hands) {
+			while (hand.size() > 0) {
+				dominoSet.add(hand.remove(0));
 			}
 		}
 	}
-	
+
 	/**
 	 * Shuffles the dominos
 	 * 
@@ -164,11 +183,12 @@ public class Game {
 		}
 
 		int[] order = new int[dominoSet.size()];
-		
+
 		for (int i = 0; i < order.length; i++) {
-				order[i] = (int)(Math.random() * 2800);
-		};
-		
+			order[i] = (int) (Math.random() * 2800);
+		}
+		;
+
 		int temp;
 		Domino tempD;
 		for (int i = 0; i < order.length - 1; i++) {
@@ -176,15 +196,15 @@ public class Game {
 				temp = order[i];
 				order[i] = order[i + 1];
 				order[i + 1] = temp;
-				
+
 				tempD = dominoSet.get(i);
-				dominoSet.set(i, dominoSet.get(i + 1)); 
+				dominoSet.set(i, dominoSet.get(i + 1));
 				dominoSet.set(i + 1, tempD);
-				
+
 				i = -1;
 			}
 		}
-		
+
 		return dominoSet;
 	}
 
