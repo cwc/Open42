@@ -96,52 +96,26 @@ public class Game {
 		// We now know the number of doubles and the number of each suit (i.e.
 		// three 4s, two 6s, five blanks)
 
-		int maxSide = 0; // Here we find out which suit we have the most of
-							// (this will be our most likely trump candidate)
-		for (int i = 0; i < suits.length - 1; i++) {
-			if (suits[i + 1] > suits[maxSide]) {
-				maxSide = i + 1;
-			}
-		}
-
-		// Now we calculate our maximum bid
-		if (doubles.contains(new Domino(maxSide, maxSide))) { // Do we have the
-																// double for
-																// our dominant
-																// suit?
-			if (suits[maxSide] - doubles.size() == hand.size() - 1) {
-				// We have all trumps and doubles (including the trump double).
-				// Be aggressive!
-				// One bad case here is (4/4, 4/3, 4/2, 4/1, 4/0, 1/1, 6/6)
+		// Determine a trump suit
+		for (int i = 0; i < suits.length; i++) {
+			if (suits[i] > 6) {
 				bid = 84;
-			} else if (suits[maxSide] > 4) {
-				// We have five or more trumps
-				bid = 42;
-			} else if (doubles.size() >= hand.size() - suits[maxSide]) {
-				// 4 doubles and 4 in our suit would be a potential lay down
-				// Worst hand: (1/1, 3/3, 6/6, 4/4, 4/0, 4/2, 4/3)
-				// Best hand: (4/4, 4/6, 4/5, 4/3, 5/5, 3/3, 2/2)
-				// Worst hand could see opponent's 4/6 capping the 5/5... nasty
-
-				// 3 doubles and 4 in our suit is even less stellar
-				// Worst hand: (1/1, 0/0, 0/5, 4/4, 4/0, 4/2, 4/3)
-				// Best hand: (4/4, 4/6, 4/5, 4/3, 3/3, 0/0, 6/5)
-				// Worst hand would probably lose at least 16. Getting the
-				// tenners would be a must.
-				if (doubles.contains("5/5")) {
-					bid = 32;
-				} else {
-					bid = 31;
-				}
-			}
-		} else { // We lack the double for the dominant suit
-			if (maxSide == 0 || maxSide == 1) {
-				// Can we go low?
-				if (suits[maxSide] >= 3) {
-					bidCondition = BidCondition.LowDoublesHigh;
+			} else if (suits[i] > 4) { 
+				if (doubles.contains(new Domino(i, i))) {
 					bid = 42;
+				} else {
+					bid = 35;
+				}
+			} else if (suits[i] > 2) {
+				if (doubles.contains(new Domino(i, i))) {
+					bid = 31;
+				} else {
+					bid = 30;
 				}
 			}
+			
+			if (bid > 30)
+				break;
 		}
 
 		return new Bid(bid, bidCondition);

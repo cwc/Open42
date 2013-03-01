@@ -1,13 +1,8 @@
-/**
- * 
- */
 package open42lib;
 
-/**
- * @author cwc
- *
- */
 public class Bid {
+	public static final int PASS = -1;
+	
 	private int bid;
 	private BidCondition condition = BidCondition.Straight;
 	
