@@ -18,8 +18,7 @@ public class BidTests {
 
 	@Test
 	public final void testEmptyBid() {
-		assertEquals(Bid.PASS, testGame.makeBid(testGame.hands.get(0))
-				.getBidPoints());
+		assertEquals(Bid.PASS, testGame.hands.get(0).getBasicBid());
 	}
 
 	@Test
@@ -32,7 +31,7 @@ public class BidTests {
 		testGame.hands.get(0).add(new Domino(6, 1));
 		testGame.hands.get(0).add(new Domino(6, 0));
 
-		assertEquals(84, testGame.makeBid(testGame.hands.get(0)).getBidPoints());
+		assertEquals(84, testGame.hands.get(0).getBasicBid().getBidPoints());
 	}
 
 	@Test
@@ -45,7 +44,7 @@ public class BidTests {
 		testGame.hands.get(0).add(new Domino(3, 3));
 		testGame.hands.get(0).add(new Domino(2, 2));
 
-		assertEquals(31, testGame.makeBid(testGame.hands.get(0)).getBidPoints());
+		assertEquals(31, testGame.hands.get(0).getBasicBid().getBidPoints());
 	}
 
 	@Test
@@ -58,7 +57,7 @@ public class BidTests {
 		testGame.hands.get(0).add(new Domino(3, 3));
 		testGame.hands.get(0).add(new Domino(2, 2));
 
-		assertEquals(31, testGame.makeBid(testGame.hands.get(0)).getBidPoints());
+		assertEquals(31, testGame.hands.get(0).getBasicBid().getBidPoints());
 	}
 
 	@Test
@@ -73,7 +72,7 @@ public class BidTests {
 		testGame.hands.get(0).add(new Domino(2, 1));
 		testGame.hands.get(0).add(new Domino(6, 6));
 
-		assertEquals(42, testGame.makeBid(testGame.hands.get(0)).getBidPoints());
+		assertEquals(42, testGame.hands.get(0).getBasicBid().getBidPoints());
 	}
 
 	@Test
@@ -88,8 +87,7 @@ public class BidTests {
 		testGame.hands.get(0).add(new Domino(3, 1));
 		testGame.hands.get(0).add(new Domino(1, 1));
 
-		assertEquals(Bid.PASS, testGame.makeBid(testGame.hands.get(0))
-				.getBidPoints());
+		assertEquals(Bid.PASS, testGame.hands.get(0).getBasicBid());
 	}
 
 	@Test
@@ -104,7 +102,6 @@ public class BidTests {
 		testGame.hands.get(0).add(new Domino(3, 3));
 		testGame.hands.get(0).add(new Domino(1, 1));
 
-		assertEquals(Bid.PASS, testGame.makeBid(testGame.hands.get(0))
-				.getBidPoints());
+		assertEquals(Bid.PASS, testGame.hands.get(0).getBasicBid());
 	}
 }

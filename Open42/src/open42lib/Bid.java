@@ -1,7 +1,7 @@
 package open42lib;
 
 public class Bid {
-	public static final int PASS = -1;
+	public static final Bid PASS = new Bid(-1);
 
 	private int bid;
 	private BidCondition condition = BidCondition.Straight;
@@ -34,5 +34,21 @@ public class Bid {
 	@Override
 	public String toString() {
 		return Integer.toString(bid);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Integer) {
+			// If it's an int, just check the points value
+			return obj.equals(getBidPoints());
+		} else if (obj instanceof Bid) {
+			// If it's a bid, it must have the exact same parameters
+			Bid otherBid = (Bid) obj;
+
+			return (otherBid.getBidCondition() == getBidCondition() && otherBid
+					.getBidPoints() == getBidPoints());
+		}
+
+		return super.equals(obj);
 	}
 }

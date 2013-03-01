@@ -57,67 +57,6 @@ public class Game {
 	}
 
 	/**
-	 * TODO: Describe this method.
-	 * 
-	 * @param hand
-	 * @return A Bid object describing the optimum bid
-	 */
-	public Bid makeBid(List<Domino> hand) {
-		int bid = -1;
-		BidCondition bidCondition = BidCondition.Straight;
-
-		Hand doubles = new Hand(); // The doubles in this hand
-		int[] suits = new int[Domino.MAX_PIPS + 1]; // The number of dominos we
-													// have of each suit
-
-		for (int i = 0; i < suits.length; i++) { // Initialize the array of suit
-													// counts
-			suits[i] = 0;
-		}
-
-		for (Domino domino : hand) {
-			if (domino == null) {
-				break;
-			}
-
-			if (domino.isDouble()) {
-				doubles.add(domino);
-				suits[domino.bigEnd()]++;
-			} else {
-				suits[domino.bigEnd()]++;
-				suits[domino.littleEnd()]++;
-			}
-		}
-
-		// We now know the number of doubles and the number of each suit (i.e.
-		// three 4s, two 6s, five blanks)
-
-		// Determine a trump suit
-		for (int i = 0; i < suits.length; i++) {
-			if (suits[i] > 6) {
-				bid = 84;
-			} else if (suits[i] > 4) {
-				if (doubles.contains(new Domino(i, i))) {
-					bid = 42;
-				} else {
-					bid = 35;
-				}
-			} else if (suits[i] > 2) {
-				if (doubles.contains(new Domino(i, i))) {
-					bid = 31;
-				} else {
-					bid = 30;
-				}
-			}
-
-			if (bid > 30)
-				break;
-		}
-
-		return new Bid(bid, bidCondition);
-	}
-
-	/**
 	 * Divides dominos from the main set into everyone's hands
 	 */
 	public void drawHands() {

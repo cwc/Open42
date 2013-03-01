@@ -14,7 +14,7 @@ public class Open42{
 			my42Game.shuffleDominos()
 			my42Game.drawHands()
 			my42Game.hands.each {
-				println it.toString() + " - " + my42Game.makeBid(it)
+				println it.toString() + " - " + it.getBasicBid()
 			}
 		}
 	}
