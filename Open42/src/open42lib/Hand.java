@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * @author cwc
- * 
- *         A Hand is a collection of Domino objects
+ * A Hand is a collection of Domino objects
  */
 public class Hand extends ArrayList<Domino> {
 	private static final long serialVersionUID = -1004042584344831119L;
@@ -30,12 +28,12 @@ public class Hand extends ArrayList<Domino> {
 	public Hand(int maxDominoes) {
 		this.maxDominoes = maxDominoes;
 	}
-	
+
 	/**
 	 * Sorts this hand
 	 */
 	public void sort() {
-		
+
 	}
 
 	@Override
@@ -74,15 +72,15 @@ public class Hand extends ArrayList<Domino> {
 
 	@Override
 	public int indexOf(Object o) {
-        if (o == null) {
-            for (int i = 0; i < size(); i++)
-                if (get(i)==null)
-                    return i;
-        } else {
-            for (int i = 0; i < size(); i++)
-                if (get(i).equals(o))
-                    return i;
-        }
-        return -1;
+		if (o == null) {
+			for (int i = 0; i < size(); i++)
+				if (get(i) == null)
+					return i;
+		} else {
+			for (int i = 0; i < size(); i++)
+				if (get(i).equals(o))
+					return i;
+		}
+		return -1;
 	}
 }

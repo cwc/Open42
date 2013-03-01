@@ -3,10 +3,6 @@ package open42lib;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author cwc
- * 
- */
 public class Game {
 	/**
 	 * The number of dominos in a set
@@ -100,7 +96,7 @@ public class Game {
 		for (int i = 0; i < suits.length; i++) {
 			if (suits[i] > 6) {
 				bid = 84;
-			} else if (suits[i] > 4) { 
+			} else if (suits[i] > 4) {
 				if (doubles.contains(new Domino(i, i))) {
 					bid = 42;
 				} else {
@@ -113,7 +109,7 @@ public class Game {
 					bid = 30;
 				}
 			}
-			
+
 			if (bid > 30)
 				break;
 		}

@@ -18,7 +18,7 @@ import org.junit.Test;
 
 public class GameTest {
 	Game testGame;
-	
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 	}
@@ -47,17 +47,17 @@ public class GameTest {
 		for (List<Domino> hand : testGame.hands) {
 			assertEquals(0, hand.size());
 		}
-		
+
 		testGame.drawHands();
-		
+
 		assertEquals(0, dominos.size());
-		
+
 		for (List<Domino> hand : testGame.hands) {
 			assertEquals(7, hand.size());
 		}
-		
+
 		testGame.resetDominos();
-		
+
 		// Check that hands are empty
 		for (List<Domino> hand : testGame.hands) {
 			assertEquals(0, hand.size());
@@ -67,13 +67,13 @@ public class GameTest {
 	@Test
 	public final void testSetTrump() {
 		assertEquals(testGame.getTrump(), -1);
-		
+
 		testGame.setTrump(3);
 		assertEquals(testGame.getTrump(), 3);
-		
+
 		testGame.setTrump(-3);
 		assertEquals(testGame.getTrump(), Domino.MIN_PIPS);
-	
+
 		testGame.setTrump(22);
 		assertEquals(testGame.getTrump(), Domino.MAX_PIPS);
 	}
@@ -81,20 +81,20 @@ public class GameTest {
 	@Test
 	public final void testSetBid() {
 		assertEquals(testGame.getBid().getBidPoints(), -1);
-	
+
 		testGame.setBid(new Bid(36));
 		assertTrue(testGame.getBid().getBidPoints() == 36);
 		assertTrue(testGame.getBid().getBidCondition() == BidCondition.Straight);
-		
+
 		testGame.setBid(new Bid(29));
 		assertEquals(testGame.getBid().getBidPoints(), 29);
-	
+
 		testGame.setBid(new Bid(168));
 		assertEquals(testGame.getBid().getBidPoints(), 168);
-		
+
 		testGame.setBid(new Bid(169));
 		assertEquals(testGame.getBid().getBidPoints(), 168);
-		
+
 		testGame.setBid(new Bid(83));
 		assertEquals(testGame.getBid().getBidPoints(), 42);
 	}
