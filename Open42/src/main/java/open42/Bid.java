@@ -7,15 +7,16 @@ package open42;
  * Bid.SPECIAL.
  */
 public class Bid {
-	public static final Bid PASS = new Bid(-1);
 	public static final int SPECIAL = -1;
+	public static final Bid PASS = new Bid(-1, SPECIAL);
 
 	private int bid;
 	private BidCondition condition = BidCondition.Straight;
 	private int trump = SPECIAL;
 
-	public Bid(int bid) {
+	public Bid(int bid, int trump) {
 		setBid(bid);
+		this.trump = trump;
 	}
 
 	public Bid(int bid, int trump, BidCondition condition) {

@@ -39,7 +39,7 @@ public class Game {
 	/**
 	 * Stores the bid for the current hand
 	 */
-	private Bid bid = new Bid(-1);
+	private Bid bid = Bid.PASS;
 
 	public Game() {
 		// Populate the set of dominos

@@ -1,14 +1,10 @@
 package open42;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import open42.Bid;
-import open42.BidCondition;
-import open42.Domino;
-import open42.Game;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -82,21 +78,26 @@ public class GameTest {
 	public final void testSetBid() {
 		assertEquals(testGame.getBid().getBidPoints(), -1);
 
-		testGame.setBid(new Bid(36));
+		testGame.setBid(new Bid(36, 4));
 		assertTrue(testGame.getBid().getBidPoints() == 36);
 		assertTrue(testGame.getBid().getBidCondition() == BidCondition.Straight);
+		assertTrue(testGame.getBid().getTrump() == 4);
 
-		testGame.setBid(new Bid(29));
+		testGame.setBid(new Bid(29, 2));
 		assertEquals(testGame.getBid().getBidPoints(), 29);
+		assertEquals(2, testGame.getBid().getTrump());
 
-		testGame.setBid(new Bid(168));
+		testGame.setBid(new Bid(168, 5));
 		assertEquals(testGame.getBid().getBidPoints(), 168);
+		assertEquals(5, testGame.getBid().getTrump());
 
-		testGame.setBid(new Bid(169));
+		testGame.setBid(new Bid(169, 6));
 		assertEquals(testGame.getBid().getBidPoints(), 168);
+		assertEquals(6, testGame.getBid().getTrump());
 
-		testGame.setBid(new Bid(83));
+		testGame.setBid(new Bid(83, Bid.SPECIAL));
 		assertEquals(testGame.getBid().getBidPoints(), 42);
+		assertEquals(Bid.SPECIAL, testGame.getBid().getTrump());
 	}
 
 }

@@ -1,11 +1,25 @@
 package open42;
 
+import java.util.Collection;
+
 public class Domino {
 	public static final int MAX_PIPS = 6;
 	public static final int MIN_PIPS = 0;
 
+	public static final Collection<Domino> FIVE_COUNTS = new Hand();
+	public static final Collection<Domino> TEN_COUNTS = new Hand();
+
 	private int side0;
 	private int side1;
+
+	static {
+		// Initialize constants
+		FIVE_COUNTS.add(new Domino(3, 2));
+		FIVE_COUNTS.add(new Domino(4, 1));
+		FIVE_COUNTS.add(new Domino(0, 5));
+		TEN_COUNTS.add(new Domino(6, 4));
+		TEN_COUNTS.add(new Domino(5, 5));
+	}
 
 	public Domino(int side0, int side1) {
 		this.setSide0(side0);
@@ -60,5 +74,17 @@ public class Domino {
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * Checks if the domino is of the given suit
+	 * 
+	 * @param suit
+	 *            The suit to test
+	 * 
+	 * @return true if either end of the domino matches the given suit
+	 */
+	public boolean isSuit(int suit) {
+		return side0 == suit || side1 == suit;
 	}
 }
