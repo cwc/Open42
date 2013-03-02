@@ -1,9 +1,9 @@
-package tests;
+package open42;
 
 import static org.junit.Assert.assertEquals;
-import open42lib.Bid;
-import open42lib.Domino;
-import open42lib.Game;
+import open42.Bid;
+import open42.Domino;
+import open42.Game;
 
 import org.junit.Before;
 import org.junit.Test;

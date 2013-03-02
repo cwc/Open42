@@ -1,4 +1,4 @@
-package open42lib;
+package open42;
 
 import java.util.ArrayList;
 import java.util.Collection;
