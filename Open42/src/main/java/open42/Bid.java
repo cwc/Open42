@@ -1,17 +1,26 @@
 package open42;
 
+/**
+ * A bid encapsulates a point total and combination of trump suit and bid
+ * condition. Some bid conditions may not require a trump suit (e.g. NoTrumps or
+ * DoublesAsTrumps); in those cases, the value of the trump is equal to
+ * Bid.SPECIAL.
+ */
 public class Bid {
 	public static final Bid PASS = new Bid(-1);
+	public static final int SPECIAL = -1;
 
 	private int bid;
 	private BidCondition condition = BidCondition.Straight;
+	private int trump = SPECIAL;
 
 	public Bid(int bid) {
 		setBid(bid);
 	}
 
-	public Bid(int bid, BidCondition condition) {
+	public Bid(int bid, int trump, BidCondition condition) {
 		setBid(bid);
+		this.trump = trump;
 		this.condition = condition;
 	}
 
@@ -50,5 +59,9 @@ public class Bid {
 		}
 
 		return super.equals(obj);
+	}
+
+	public int getTrump() {
+		return trump;
 	}
 }

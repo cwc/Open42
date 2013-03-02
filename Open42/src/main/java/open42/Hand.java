@@ -98,12 +98,14 @@ public class Hand extends ArrayList<Domino> {
 		BidCondition bidCondition = BidCondition.Straight;
 
 		Hand doubles = new Hand(); // The doubles in this hand
+		int suit = 0;
 		int[] suits = new int[Domino.MAX_PIPS + 1]; // The number of dominos we
 													// have of each suit
 
-		for (int i = 0; i < suits.length; i++) { // Initialize the array of suit
-													// counts
-			suits[i] = 0;
+		for (suit = 0; suit < suits.length; suit++) { // Initialize the array of
+														// suit
+														// counts
+			suits[suit] = 0;
 		}
 
 		for (Domino domino : this) {
@@ -124,17 +126,17 @@ public class Hand extends ArrayList<Domino> {
 		// three 4s, two 6s, five blanks)
 
 		// Determine a trump suit
-		for (int i = 0; i < suits.length; i++) {
-			if (suits[i] > 6) {
+		for (suit = 0; suit < suits.length; suit++) {
+			if (suits[suit] > 6) {
 				bid = 84;
-			} else if (suits[i] > 4) {
-				if (doubles.contains(new Domino(i, i))) {
+			} else if (suits[suit] > 4) {
+				if (doubles.contains(new Domino(suit, suit))) {
 					bid = 42;
 				} else {
 					bid = 35;
 				}
-			} else if (suits[i] > 2) {
-				if (doubles.contains(new Domino(i, i))) {
+			} else if (suits[suit] > 2) {
+				if (doubles.contains(new Domino(suit, suit))) {
 					bid = 31;
 				} else {
 					bid = 30;
@@ -145,6 +147,6 @@ public class Hand extends ArrayList<Domino> {
 				break;
 		}
 
-		return new Bid(bid, bidCondition);
+		return new Bid(bid, suit, bidCondition);
 	}
 }
