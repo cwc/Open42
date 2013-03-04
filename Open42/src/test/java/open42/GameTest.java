@@ -4,7 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import open42.game.Game;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -25,7 +26,7 @@ public class GameTest {
 
 	@Before
 	public void setUp() throws Exception {
-		testGame = new Game();
+		testGame = new Game(4);
 	}
 
 	@After
@@ -34,29 +35,29 @@ public class GameTest {
 
 	@Test
 	public final void testShuffleDrawAndReset() {
-		assertEquals(testGame.hands.size(), 4);
+		assertEquals(testGame.players.size(), 4);
 
 		ArrayList<Domino> dominos = testGame.shuffleDominos();
 		assertEquals(dominos.size(), Game.DOMINO_COUNT);
 
 		// Check that hands are empty
-		for (List<Domino> hand : testGame.hands) {
-			assertEquals(0, hand.size());
+		for (Player p : testGame.players) {
+			assertEquals(0, p.getHand().size());
 		}
 
 		testGame.drawHands();
 
 		assertEquals(0, dominos.size());
 
-		for (List<Domino> hand : testGame.hands) {
-			assertEquals(7, hand.size());
+		for (Player p : testGame.players) {
+			assertEquals(7, p.getHand().size());
 		}
 
 		testGame.resetDominos();
 
 		// Check that hands are empty
-		for (List<Domino> hand : testGame.hands) {
-			assertEquals(0, hand.size());
+		for (Player p : testGame.players) {
+			assertEquals(0, p.getHand().size());
 		}
 	}
 
@@ -78,26 +79,21 @@ public class GameTest {
 	public final void testSetBid() {
 		assertEquals(testGame.getBid().getBidPoints(), -1);
 
-		testGame.setBid(new Bid(36, 4));
+		testGame.setBid(new Bid(36, 3));
 		assertTrue(testGame.getBid().getBidPoints() == 36);
 		assertTrue(testGame.getBid().getBidCondition() == BidCondition.Straight);
-		assertTrue(testGame.getBid().getTrump() == 4);
 
-		testGame.setBid(new Bid(29, 2));
+		testGame.setBid(new Bid(29, 6));
 		assertEquals(testGame.getBid().getBidPoints(), 29);
-		assertEquals(2, testGame.getBid().getTrump());
 
-		testGame.setBid(new Bid(168, 5));
+		testGame.setBid(new Bid(168, 2));
 		assertEquals(testGame.getBid().getBidPoints(), 168);
-		assertEquals(5, testGame.getBid().getTrump());
 
-		testGame.setBid(new Bid(169, 6));
+		testGame.setBid(new Bid(169, 0));
 		assertEquals(testGame.getBid().getBidPoints(), 168);
-		assertEquals(6, testGame.getBid().getTrump());
 
-		testGame.setBid(new Bid(83, Bid.SPECIAL));
+		testGame.setBid(new Bid(83, 7));
 		assertEquals(testGame.getBid().getBidPoints(), 42);
-		assertEquals(Bid.SPECIAL, testGame.getBid().getTrump());
 	}
 
 }

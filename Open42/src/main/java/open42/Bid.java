@@ -1,5 +1,7 @@
 package open42;
 
+import open42.game.Game;
+
 /**
  * A bid encapsulates a point total and combination of trump suit and bid
  * condition. Some bid conditions may not require a trump suit (e.g. NoTrumps or

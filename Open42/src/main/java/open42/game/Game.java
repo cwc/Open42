@@ -1,7 +1,11 @@
-package open42;
+package open42.game;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import open42.Bid;
+import open42.Domino;
+import open42.Player;
 
 public class Game {
 	/**
@@ -27,9 +31,9 @@ public class Game {
 	private ArrayList<Domino> dominoSet = new ArrayList<Domino>(DOMINO_COUNT);
 
 	/**
-	 * A list of player hands
+	 * A list of players
 	 */
-	public List<Hand> hands = new ArrayList<Hand>();
+	public List<Player> players = new ArrayList<Player>();
 
 	/**
 	 * Stores the trump suit for the current hand
@@ -41,7 +45,12 @@ public class Game {
 	 */
 	private Bid bid = Bid.PASS;
 
-	public Game() {
+	/**
+	 * Starts a new game with the given number of players
+	 * 
+	 * @param numPlayers
+	 */
+	public Game(int numPlayers) {
 		// Populate the set of dominos
 		for (int j = Domino.MIN_PIPS; j <= Domino.MAX_PIPS; j++) {
 			for (int k = j; k <= Domino.MAX_PIPS; k++) {
@@ -49,20 +58,19 @@ public class Game {
 			}
 		}
 
-		// Create initial hands
-		hands.add(new Hand());
-		hands.add(new Hand());
-		hands.add(new Hand());
-		hands.add(new Hand());
+		// Create players
+		for (int i = 0; i < numPlayers; i++) {
+			players.add(new Player());
+		}
 	}
 
 	/**
 	 * Divides dominos from the main set into everyone's hands
 	 */
 	public void drawHands() {
-		for (List<Domino> hand : hands) {
-			while (hand.size() < 7) {
-				hand.add(dominoSet.remove(0));
+		for (Player p : players) {
+			while (p.getHand().size() < 7) {
+				p.getHand().add(dominoSet.remove(0));
 			}
 		}
 	}
@@ -72,9 +80,9 @@ public class Game {
 	 */
 	public void resetDominos() {
 		// Empty everyone's hands
-		for (ArrayList<Domino> hand : hands) {
-			while (hand.size() > 0) {
-				dominoSet.add(hand.remove(0));
+		for (Player p : players) {
+			while (p.getHand().size() > 0) {
+				dominoSet.add(p.getHand().remove(0));
 			}
 		}
 	}
@@ -96,7 +104,6 @@ public class Game {
 		for (int i = 0; i < order.length; i++) {
 			order[i] = (int) (Math.random() * 2800);
 		}
-		;
 
 		int temp;
 		Domino tempD;
