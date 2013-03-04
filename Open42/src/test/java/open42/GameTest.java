@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 
 import open42.game.Game;
+import open42.player.Player;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -14,7 +15,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class GameTest {
-	Game testGame;
+	protected Game testGame;
+	protected ArrayList<Player> players;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -26,7 +28,13 @@ public class GameTest {
 
 	@Before
 	public void setUp() throws Exception {
-		testGame = new Game(4);
+		players = new ArrayList<Player>();
+		players.add(new AIPlayer());
+		players.add(new AIPlayer());
+		players.add(new AIPlayer());
+		players.add(new AIPlayer());
+
+		testGame = new Game(players);
 	}
 
 	@After

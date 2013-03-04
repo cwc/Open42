@@ -1,9 +1,6 @@
 package open42;
 
 import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
 import open42.game.FourtyTwoGame;
 
 import org.junit.Test;
@@ -12,7 +9,7 @@ public class FourtyTwoGameTest extends GameTest {
 	@Test
 	public void testPartners() {
 		// Test that partners have been linked correctly
-		List<Player> players = new FourtyTwoGame().players;
+		new FourtyTwoGame(players);
 
 		assertTrue(players.get(0).getPartner().equals(players.get(2)));
 		assertTrue(players.get(1).getPartner().equals(players.get(3)));

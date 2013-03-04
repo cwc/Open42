@@ -1,6 +1,9 @@
-package open42;
+package open42.player;
 
-public class Player {
+import open42.Bid;
+import open42.Hand;
+
+public abstract class Player {
 	private Hand hand = new Hand();
 	private Player partner;
 
@@ -15,4 +18,6 @@ public class Player {
 	public Hand getHand() {
 		return hand;
 	}
+
+	public abstract Bid getBid();
 }

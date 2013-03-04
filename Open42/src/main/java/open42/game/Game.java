@@ -5,7 +5,7 @@ import java.util.List;
 
 import open42.Bid;
 import open42.Domino;
-import open42.Player;
+import open42.player.Player;
 
 public class Game {
 	/**
@@ -50,7 +50,7 @@ public class Game {
 	 * 
 	 * @param numPlayers
 	 */
-	public Game(int numPlayers) {
+	public Game(List<Player> players) {
 		// Populate the set of dominos
 		for (int j = Domino.MIN_PIPS; j <= Domino.MAX_PIPS; j++) {
 			for (int k = j; k <= Domino.MAX_PIPS; k++) {
@@ -58,10 +58,7 @@ public class Game {
 			}
 		}
 
-		// Create players
-		for (int i = 0; i < numPlayers; i++) {
-			players.add(new Player());
-		}
+		this.players = players;
 	}
 
 	/**
