@@ -29,10 +29,10 @@ public class GameTest {
 	@Before
 	public void setUp() throws Exception {
 		players = new ArrayList<Player>();
-		players.add(new AIPlayer());
-		players.add(new AIPlayer());
-		players.add(new AIPlayer());
-		players.add(new AIPlayer());
+		players.add(new AIPlayer("AI1"));
+		players.add(new AIPlayer("AI2"));
+		players.add(new AIPlayer("AI3"));
+		players.add(new AIPlayer("AI4"));
 
 		testGame = new Game(players);
 	}
@@ -104,4 +104,70 @@ public class GameTest {
 		assertEquals(testGame.getBid().getBidPoints(), 42);
 	}
 
+	@Test
+	public void testPlayerIterator() {
+		int i = 0;
+		int count = 0;
+		for (Player p : testGame.getTableIterator(players.get(i))) {
+			assertEquals(players.get(i), p);
+
+			i++;
+			if (i == players.size()) {
+				i = 0;
+			}
+
+			count++;
+		}
+
+		assertEquals(0, i);
+		assertEquals(players.size(), count);
+
+		i = 1;
+		count = 0;
+		for (Player p : testGame.getTableIterator(players.get(i))) {
+			assertEquals(players.get(i), p);
+
+			i++;
+			if (i == players.size()) {
+				i = 0;
+			}
+
+			count++;
+		}
+
+		assertEquals(1, i);
+		assertEquals(players.size(), count);
+
+		i = 2;
+		count = 0;
+		for (Player p : testGame.getTableIterator(players.get(i))) {
+			assertEquals(players.get(i), p);
+
+			i++;
+			if (i == players.size()) {
+				i = 0;
+			}
+
+			count++;
+		}
+
+		assertEquals(2, i);
+		assertEquals(players.size(), count);
+
+		i = 3;
+		count = 0;
+		for (Player p : testGame.getTableIterator(players.get(i))) {
+			assertEquals(players.get(i), p);
+
+			i++;
+			if (i == players.size()) {
+				i = 0;
+			}
+
+			count++;
+		}
+
+		assertEquals(3, i);
+		assertEquals(players.size(), count);
+	}
 }

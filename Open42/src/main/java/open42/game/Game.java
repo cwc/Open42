@@ -142,4 +142,43 @@ public class Game {
 	public void setBid(Bid bid) {
 		this.bid = bid;
 	}
+
+	public TrickResult playTrick(Player leadPlayer, Bid bid) {
+		List<Domino> trick = new ArrayList<Domino>();
+
+		for (Player p : getTableIterator(leadPlayer)) {
+			// Play a domino
+			Domino playedDomino = p.playDomino(bid, trick, dominoSet);
+			trick.add(playedDomino);
+			dominoSet.add(playedDomino);
+			p.getHand().remove(playedDomino);
+		}
+
+		// Determine winner of trick
+		int winnerIndex = getWinningDomino(trick, bid);
+		int leadIndex = players.indexOf(leadPlayer);
+		winnerIndex = (leadIndex + winnerIndex) % players.size();
+
+		return new TrickResult(players.get(winnerIndex), trick);
+	}
+
+	/**
+	 * @param trick
+	 * @param bid
+	 * @return
+	 */
+	private int getWinningDomino(List<Domino> trick, Bid bid) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	/**
+	 * @param firstPlayer
+	 *            the player to begin with when iterating the list of players
+	 *            (the first player returned by the iterator's next() method)
+	 * @return an iterator that traverses the list of players
+	 */
+	public PlayerIterator getTableIterator(Player firstPlayer) {
+		return new PlayerIterator(players, firstPlayer);
+	}
 }
