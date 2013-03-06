@@ -70,20 +70,6 @@ public class GameTest {
 	}
 
 	@Test
-	public final void testSetTrump() {
-		assertEquals(testGame.getTrump(), -1);
-
-		testGame.setTrump(3);
-		assertEquals(testGame.getTrump(), 3);
-
-		testGame.setTrump(-3);
-		assertEquals(testGame.getTrump(), Domino.MIN_PIPS);
-
-		testGame.setTrump(22);
-		assertEquals(testGame.getTrump(), Domino.MAX_PIPS);
-	}
-
-	@Test
 	public final void testSetBid() {
 		assertEquals(testGame.getBid().getBidPoints(), -1);
 

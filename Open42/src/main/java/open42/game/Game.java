@@ -36,11 +36,6 @@ public class Game {
 	public List<Player> players = new ArrayList<Player>();
 
 	/**
-	 * Stores the trump suit for the current hand
-	 */
-	private int trump = -1;
-
-	/**
 	 * Stores the bid for the current hand
 	 */
 	private Bid bid = Bid.PASS;
@@ -119,20 +114,6 @@ public class Game {
 		}
 
 		return dominoSet;
-	}
-
-	public int getTrump() {
-		return trump;
-	}
-
-	public void setTrump(int trump) {
-		if (trump < Domino.MIN_PIPS) {
-			this.trump = Domino.MIN_PIPS;
-		} else if (trump > Domino.MAX_PIPS) {
-			this.trump = Domino.MAX_PIPS;
-		} else {
-			this.trump = trump;
-		}
 	}
 
 	public Bid getBid() {

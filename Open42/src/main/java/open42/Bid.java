@@ -67,4 +67,14 @@ public class Bid {
 	public int getTrump() {
 		return trump;
 	}
+
+	public void setTrump(int trump) {
+		if (trump < Domino.MIN_PIPS) {
+			this.trump = Domino.MIN_PIPS;
+		} else if (trump > Domino.MAX_PIPS) {
+			this.trump = Domino.MAX_PIPS;
+		} else {
+			this.trump = trump;
+		}
+	}
 }

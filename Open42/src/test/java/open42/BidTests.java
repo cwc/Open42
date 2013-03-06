@@ -14,6 +14,21 @@ public class BidTests {
 	}
 
 	@Test
+	public final void testSetTrump() {
+		Bid bid = new Bid(30, 3);
+		assertEquals(bid.getTrump(), 3);
+
+		bid.setTrump(0);
+		assertEquals(bid.getTrump(), 0);
+
+		bid.setTrump(-3);
+		assertEquals(bid.getTrump(), Domino.MIN_PIPS);
+
+		bid.setTrump(22);
+		assertEquals(bid.getTrump(), Domino.MAX_PIPS);
+	}
+
+	@Test
 	public final void testEmptyBid() {
 		assertEquals(Bid.PASS, testHand.getBasicBid());
 	}
