@@ -1,0 +1,4 @@
+language: java
+script: cd Open42 && mvn test
+jdk:
+ - oraclejdk7
