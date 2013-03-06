@@ -8,6 +8,7 @@ import java.util.List;
 
 import open42.game.FourtyTwoGame;
 import open42.game.PlayerIterator;
+import open42.player.AIPlayer;
 import open42.player.Player;
 
 import org.junit.Before;

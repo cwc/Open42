@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import open42.game.Game;
+import open42.player.AIPlayer;
 import open42.player.Player;
 
 import org.junit.After;

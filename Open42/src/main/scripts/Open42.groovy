@@ -1,6 +1,6 @@
 package open42
 
-import java.text.Bidi;
+import open42.player.*
 
 public class Open42 {
 	def static team1 = [new AIPlayer("1"), new AIPlayer("2")]

@@ -1,5 +1,7 @@
 package open42
 
+import open42.player.*
+
 public class Open42 {
 	/**
 	 * @param args

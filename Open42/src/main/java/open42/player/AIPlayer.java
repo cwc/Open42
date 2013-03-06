@@ -1,9 +1,10 @@
-package open42;
+package open42.player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import open42.player.Player;
+import open42.Bid;
+import open42.Domino;
 
 public class AIPlayer extends Player {
 	public AIPlayer(String name) {
