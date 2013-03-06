@@ -148,21 +148,11 @@ public class Game {
 	 * @param bid
 	 * @return
 	 */
-	private int getWinningDomino(List<Domino> trick, Bid bid) {
-		Domino largest = trick.get(0);
+	public int getWinningDomino(List<Domino> trick, Bid bid) {
+		Domino leadDomino = trick.get(0);
 
-		for (Domino d : trick) {
-			if (d.isSuit(bid.getTrump())) {
-				if (!largest.isSuit(bid.getTrump()) || d.isLargerThan(largest)) {
-					largest = d;
-				}
-			} else {
-				// Current domino is not a trump
-				if (!largest.isSuit(bid.getTrump()) && d.isLargerThan(largest)) {
-					largest = d;
-				}
-			}
-		}
+		Domino largest = Domino.getLargestDomino(trick, bid.getTrump(),
+				leadDomino.bigEnd());
 
 		return trick.indexOf(largest);
 	}

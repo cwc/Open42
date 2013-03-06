@@ -1,6 +1,7 @@
 package open42;
 
 import java.util.Collection;
+import java.util.List;
 
 public class Domino {
 	public static final int MAX_PIPS = 6;
@@ -93,23 +94,72 @@ public class Domino {
 	 * 
 	 * @param other
 	 *            the domino to compare
+	 * @param suit
+	 *            the suit the dominos are played as (e.g. 0/0 is smaller than
+	 *            2/0 if suit == 2)
 	 * 
 	 * @return true if the two dominoes share a suit, and this one is larger
 	 */
-	public boolean isLargerThan(Domino other) {
+	public boolean isLargerThan(Domino other, int suit) {
 		// Shortcut edge case
 		if (other == null) {
 			return true;
 		}
 
+		if (isSuit(suit) && !other.isSuit(suit)) {
+			// The other domino doesn't match the given suit
+			return true;
+		}
+
+		// Determine which side of the other domino we match
 		if (isSuit(other.littleEnd())) {
+			if (isDouble())
+				return true;
+
+			if (other.isDouble())
+				return false;
+
 			// Same suit as the other's little end
 			return bigEnd() > other.bigEnd();
 		} else if (isSuit(other.bigEnd())) {
+			if (isDouble())
+				return true;
+
+			if (other.isDouble())
+				return false;
+
 			return littleEnd() > other.littleEnd();
 		} else {
 			// The two dominoes share no suit, so this domino can't be larger
 			return false;
 		}
+	}
+
+	/**
+	 * @return true if this is a count domino
+	 */
+	public boolean isCount() {
+		return Domino.FIVE_COUNTS.contains(this)
+				|| Domino.TEN_COUNTS.contains(this);
+	}
+
+	/**
+	 * @param trump
+	 * @return
+	 */
+	public static Domino getLargestDomino(List<Domino> trick, int trump,
+			int suit) {
+		Domino biggestDomino = trick.get(0);
+		for (Domino d : trick) {
+			if (d.isSuit(trump)
+					&& (!biggestDomino.isSuit(trump) || d.isLargerThan(
+							biggestDomino, trump))) {
+				biggestDomino = d;
+			} else if (!biggestDomino.isSuit(trump)
+					&& (d.isLargerThan(biggestDomino, suit))) {
+				biggestDomino = d;
+			}
+		}
+		return biggestDomino;
 	}
 }

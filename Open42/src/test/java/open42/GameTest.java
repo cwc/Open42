@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import open42.game.Game;
 import open42.player.Player;
@@ -39,6 +40,32 @@ public class GameTest {
 
 	@After
 	public void tearDown() throws Exception {
+	}
+
+	@Test
+	public void testWinningDomino() {
+		List<Domino> trick = new ArrayList<Domino>();
+		Bid bid = new Bid(30, 0);
+
+		// [0/0, 6/5, 6/6, 2/0]
+		trick.add(new Domino(0, 0));
+		trick.add(new Domino(6, 5));
+		trick.add(new Domino(6, 6));
+		trick.add(new Domino(2, 0));
+
+		assertEquals(0, testGame.getWinningDomino(trick, bid));
+
+		bid.setTrump(1); // No 1s played, so leader wins
+		assertEquals(0, testGame.getWinningDomino(trick, bid));
+
+		bid.setTrump(6);
+		assertEquals(2, testGame.getWinningDomino(trick, bid));
+
+		bid.setTrump(5);
+		assertEquals(1, testGame.getWinningDomino(trick, bid));
+
+		bid.setTrump(2);
+		assertEquals(3, testGame.getWinningDomino(trick, bid));
 	}
 
 	@Test

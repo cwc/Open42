@@ -36,7 +36,7 @@ public abstract class Player {
 	 * @param currentHand
 	 *            The dominoes that have been played so far in the current hand
 	 * 
-	 * @return
+	 * @return the domino to play
 	 */
 	public Domino playDomino(Bid bid, List<Domino> currentTrick,
 			ArrayList<Domino> currentHand) {
@@ -44,17 +44,24 @@ public abstract class Player {
 		if (hand.size() <= 0)
 			return null;
 
+		int suitToPlay;
 		if (currentTrick.size() == 0) {
 			// We are leading the trick
-			int trump = bid.getTrump();
-
-			Domino domino = new Domino(trump, trump);
-
-			// We have the trump double; play it
-			if (hand.contains(domino)) {
-				return domino;
+			suitToPlay = bid.getTrump();
+		} else {
+			// Follow suit if possible
+			if (currentTrick.get(0).isSuit(bid.getTrump())) {
+				suitToPlay = bid.getTrump();
+			} else {
+				suitToPlay = currentTrick.get(0).bigEnd();
 			}
 		}
+
+		// Play largest domino we have
+		Domino biggestDomino = Domino.getLargestDomino(hand, bid.getTrump(),
+				suitToPlay);
+		if (biggestDomino != null)
+			return biggestDomino;
 
 		return hand.get((int) (Math.random() * hand.size()));
 	}

@@ -4,6 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -92,4 +95,38 @@ public class DominoTest {
 		assertTrue(testDomino.isDouble());
 	}
 
+	@Test
+	public void testIsLargerThan() {
+		assertEquals(true, new Domino(0, 0).isLargerThan(new Domino(2, 0), 0));
+
+		assertEquals(true, new Domino(6, 5).isLargerThan(new Domino(6, 6), 5));
+		assertEquals(false, new Domino(6, 5).isLargerThan(new Domino(6, 6), 6));
+		assertEquals(false, new Domino(6, 5).isLargerThan(new Domino(6, 6), 0));
+	}
+
+	@Test
+	public void testGetLargestDomino() {
+		List<Domino> trick = new ArrayList<Domino>();
+		int trump = 0;
+
+		// [0/0, 6/5, 6/6, 2/0]
+		trick.add(new Domino(0, 0));
+		trick.add(new Domino(6, 5));
+		trick.add(new Domino(6, 6));
+		trick.add(new Domino(2, 0));
+
+		assertEquals(trick.get(0), Domino.getLargestDomino(trick, trump, 0));
+
+		trump = 1;
+		assertEquals(trick.get(0), Domino.getLargestDomino(trick, trump, 0));
+
+		trump = 6;
+		assertEquals(trick.get(2), Domino.getLargestDomino(trick, trump, 0));
+
+		trump = 5;
+		assertEquals(trick.get(1), Domino.getLargestDomino(trick, trump, 0));
+
+		trump = 2;
+		assertEquals(trick.get(3), Domino.getLargestDomino(trick, trump, 0));
+	}
 }
