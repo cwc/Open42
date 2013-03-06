@@ -3,8 +3,8 @@ package open42
 import java.text.Bidi;
 
 public class Open42 {
-	def static team1 = [new AIPlayer("AI1"), new AIPlayer("AI2")]
-	def static team2 = [new AIPlayer("AI3"), new AIPlayer("AI4")]
+	def static team1 = [new AIPlayer("A1"), new AIPlayer("A2")]
+	def static team2 = [new AIPlayer("B1"), new AIPlayer("B2")]
 	def static score = [(team1) : 0, (team2) : 0]
 	
 	public static boolean noWinner() {
@@ -68,7 +68,7 @@ public class Open42 {
 				} else {
 					score[my42Game.getOppositeTeam(highTeam)] += marks
 					
-					println my42Game.getOppositeTeam(highTeam).toString() + " wins hand with " + handPoints[my42Game.getOppositeTeam(highTeam)]
+					println highTeam.toString() + " loses hand with " + handPoints[highTeam]
 				}
 				
 				if (!noWinner()) {

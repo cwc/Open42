@@ -102,21 +102,14 @@ public class Domino {
 			return true;
 		}
 
-		if (!isSuit(other.littleEnd()) && !isSuit(other.bigEnd())) {
+		if (isSuit(other.littleEnd())) {
+			// Same suit as the other's little end
+			return bigEnd() > other.bigEnd();
+		} else if (isSuit(other.bigEnd())) {
+			return littleEnd() > other.littleEnd();
+		} else {
 			// The two dominoes share no suit, so this domino can't be larger
 			return false;
 		}
-
-		if (isDouble()) {
-			// Double of the same suit; obviously larger
-			return true;
-		}
-
-		if (bigEnd() > other.bigEnd()) {
-			// This one's big end is bigger
-			return true;
-		}
-
-		return false;
 	}
 }

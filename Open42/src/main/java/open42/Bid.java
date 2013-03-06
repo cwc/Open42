@@ -45,7 +45,15 @@ public class Bid {
 
 	@Override
 	public String toString() {
-		return Integer.toString(bid);
+		StringBuilder sb = new StringBuilder(Integer.toString(bid));
+
+		if (trump == SPECIAL) {
+			sb.append(", " + condition.toString());
+		} else {
+			sb.append(", " + trump + " as trump");
+		}
+
+		return sb.toString();
 	}
 
 	@Override
