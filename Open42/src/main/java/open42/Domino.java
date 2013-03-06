@@ -22,6 +22,12 @@ public class Domino {
 		TEN_COUNTS.add(new Domino(5, 5));
 	}
 
+	public Domino(String domino) {
+		String[] sides = domino.split("/");
+		this.setSide0(Integer.parseInt(sides[0]));
+		this.setSide1(Integer.parseInt(sides[1]));
+	}
+
 	public Domino(int side0, int side1) {
 		this.setSide0(side0);
 		this.setSide1(side1);

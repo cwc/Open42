@@ -3,14 +3,42 @@ package open42
 import open42.player.*
 
 public class Open42 {
-	def static team1 = [new AIPlayer("1"), new AIPlayer("2")]
-	def static team2 = [new AIPlayer("3"), new AIPlayer("4")]
+	static class GPlayer extends Player {
+		public GPlayer() {
+			super("You")
+		}
+
+		public Bid getBid() {
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in))
+
+			println hand.toString() + " bid: "
+
+			return new Bid(br.readLine())
+		}
+
+		public Domino playDomino(Bid bid, List<Domino> trick, ArrayList<Domino> playedDominoes) {
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in))
+
+			println hand.toString() + " play: " + trick
+
+			return new Domino(br.readLine())
+		}
+	}
+
+	def static team1 = [
+		new GPlayer(),
+		new AIPlayer("2")
+	]
+	def static team2 = [
+		new AIPlayer("3"),
+		new AIPlayer("4")
+	]
 	def static score = [(team1) : 0, (team2) : 0]
-	
+
 	public static boolean noWinner() {
 		return score[team1] < 7 && score[team2] < 7
 	}
-	
+
 	/**
 	 * @param args
 	 */
@@ -24,7 +52,7 @@ public class Open42 {
 			iter.each {
 				// Set up this hand
 				def nextBidder = it
-				
+
 				my42Game.shuffleDominos()
 				my42Game.drawHands()
 
@@ -63,14 +91,14 @@ public class Open42 {
 				def marks = Math.max((int)(currentBid.getBidPoints() / 42), 1)
 				if (handPoints[highTeam] >= currentBid.getBidPoints()) {
 					score[highTeam] += marks
-					
+
 					println highTeam.toString() + " wins hand with " + handPoints[highTeam]
 				} else {
 					score[my42Game.getOppositeTeam(highTeam)] += marks
-					
+
 					println highTeam.toString() + " loses hand with " + handPoints[highTeam]
 				}
-				
+
 				if (!noWinner()) {
 					// HACK Force inner loop to complete
 					while (iter.hasNext()) iter.next()

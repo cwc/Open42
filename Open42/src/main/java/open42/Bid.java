@@ -16,14 +16,22 @@ public class Bid {
 	private BidCondition condition = BidCondition.Straight;
 	private int trump = SPECIAL;
 
+	public Bid(String bid) {
+		String[] argv = bid.split(" ");
+
+		setBid(Integer.parseInt(argv[0]));
+		setTrump(Integer.parseInt(argv[1]));
+	}
+
 	public Bid(int bid, int trump) {
 		setBid(bid);
-		this.trump = trump;
+		setTrump(trump);
 	}
 
 	public Bid(int bid, int trump, BidCondition condition) {
 		setBid(bid);
-		this.trump = trump;
+		setTrump(trump);
+
 		this.condition = condition;
 	}
 
@@ -77,6 +85,11 @@ public class Bid {
 	}
 
 	public void setTrump(int trump) {
+		if (trump == SPECIAL) {
+			this.trump = SPECIAL;
+			return;
+		}
+
 		if (trump < Domino.MIN_PIPS) {
 			this.trump = Domino.MIN_PIPS;
 		} else if (trump > Domino.MAX_PIPS) {

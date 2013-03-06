@@ -8,9 +8,14 @@ public class Open42 {
 	 */
 	public static void main(def args) {
 		def my42Game = new game.FourtyTwoGame(
-			[new AIPlayer("AI1"), new AIPlayer("AI2")],
-			[new AIPlayer("AI3"), new AIPlayer("AI4")]
-		)
+				[
+					new AIPlayer("AI1"),
+					new AIPlayer("AI2")
+				],
+				[
+					new AIPlayer("AI3"),
+					new AIPlayer("AI4")]
+				)
 
 		(1..5).each {
 			println "This hand: "
