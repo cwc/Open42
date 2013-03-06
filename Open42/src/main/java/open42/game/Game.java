@@ -149,8 +149,22 @@ public class Game {
 	 * @return
 	 */
 	private int getWinningDomino(List<Domino> trick, Bid bid) {
-		// TODO Auto-generated method stub
-		return 0;
+		Domino largest = trick.get(0);
+
+		for (Domino d : trick) {
+			if (d.isSuit(bid.getTrump())) {
+				if (!largest.isSuit(bid.getTrump()) || d.isLargerThan(largest)) {
+					largest = d;
+				}
+			} else {
+				// Current domino is not a trump
+				if (!largest.isSuit(bid.getTrump()) && d.isLargerThan(largest)) {
+					largest = d;
+				}
+			}
+		}
+
+		return trick.indexOf(largest);
 	}
 
 	/**

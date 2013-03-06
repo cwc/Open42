@@ -87,4 +87,36 @@ public class Domino {
 	public boolean isSuit(int suit) {
 		return side0 == suit || side1 == suit;
 	}
+
+	/**
+	 * Checks whether this domino is larger than the other
+	 * 
+	 * @param other
+	 *            the domino to compare
+	 * 
+	 * @return true if the two dominoes share a suit, and this one is larger
+	 */
+	public boolean isLargerThan(Domino other) {
+		// Shortcut edge case
+		if (other == null) {
+			return true;
+		}
+
+		if (!isSuit(other.littleEnd()) && !isSuit(other.bigEnd())) {
+			// The two dominoes share no suit, so this domino can't be larger
+			return false;
+		}
+
+		if (isDouble()) {
+			// Double of the same suit; obviously larger
+			return true;
+		}
+
+		if (bigEnd() > other.bigEnd()) {
+			// This one's big end is bigger
+			return true;
+		}
+
+		return false;
+	}
 }
